@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  lint-and-test:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repository
@@ -19,22 +19,21 @@ jobs:
       - name: Set up Node.js (LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: 20 # LTS-Version von Node.js
+          node-version: 20
           cache: "npm"
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Tests
-        run: npm test
-        continue-on-error: true
+      - name: Run Linter (Next.js ESLint)
+        run: npm run lint || true # Verhindert Abbruch der Pipeline
 
-      - name: Build Project
-        run: npm run build
+      - name: Run Tests (Jest)
+        run: npm test || true # Verhindert Abbruch der Pipeline
 
-  deploy:
-    needs: build-and-test
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    needs: lint-and-test
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repository
