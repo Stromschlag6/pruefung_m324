@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Run Linter (Next.js ESLint)
-        run: npm run lint || true # Verhindert Abbruch der Pipeline
+        run: npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
         run: npm install
 
       - name: Run Tests (Jest)
-        run: npm test || true # Verhindert Abbruch der Pipeline
+        run: npm test
 
   build:
     runs-on: ubuntu-latest
